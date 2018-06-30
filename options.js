@@ -1,3 +1,74 @@
+const SourceEnum = {
+    CONTENT: 'content',
+    BACKGROUND: 'background',
+    OPTIONS: 'options'
+};
+const ActionEnum = {
+    EXEC_REGISTER: 'exec_register',
+    EXEC_UNLOCK: 'exec_unlock',
+    EXEC_UPLOAD: 'exec_upload',
+    EXEC_PULL_LIST: 'exec_pull_list',
+    ACTION_NOTIFY: 'action_notify',
+    ACTION_STATE_NET: 'action_state_net',
+    ACTION_STATE_REGISTER: 'action_state_register',
+    ACTION_STATE_UNLOCK: 'action_state_unlock',
+    ACTION_DATA_ADDRESS: 'action_data_address',
+    ACTION_GET_PASSWORD: 'action_get_password',
+    ACTION_GENERATE_PASSWORD: 'action_generate_password',
+    ACTION_DEFAULT: 'action_default',
+    ACTION_SET_ACCOUNT: 'action_set_account',
+    ACTION_SET_PASSWORD: 'action_set_password'
+};
+class Intent {
+    constructor(to, action, data, from = SourceEnum.OPTIONS){
+        this.to = to;
+        this.action = action;
+        this.data = data;
+        this.from = from;
+    }
+}
+function geti18n(key) {
+    return chrome.i18n.getMessage(key);
+}
+//生成随机字符串
+const randomString = function (len) {
+    let text = "",
+        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (let i = 0; i < len; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+};
+//aes加密
+const Encrypt = function (data, key) {
+    key = CryptoJS.enc.Utf8.parse(key);
+    let iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
+    let encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key,
+        {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+    return encrypted.toString();
+};
+//aes解密
+const Decrypt = function (data, key) {
+    key = CryptoJS.enc.Utf8.parse(key);
+    let iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
+    let decrypted = CryptoJS.AES.decrypt(data, key,
+        {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+    let decryptedData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+    return decryptedData;
+};
+const md5Encrypt = function (data) {
+    return CryptoJS.MD5(data).toString();
+};
+
+
 let btnUnlock = $('#unlock'),
     btnRegister = $('#register'),
     btnDownload = $('#download'),
@@ -18,12 +89,6 @@ let btnUnlock = $('#unlock'),
     keyFile='',
     passList = [];
 
-
-
-//设置钱包地址
-wallet.val(background.globle_data.user_address);
-
-
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     if(message.to === SourceEnum.OPTIONS){
         if(message.from === SourceEnum.BACKGROUND){
@@ -40,8 +105,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
                         initPassList(Array.from(new Set(background.data_proxy.local_pass.concat(background.data_proxy.sync_pass))));
                     }else {
                         //解锁失败
-                        console.log("解锁失败");
-                        // key.replaceWith(key.val('').clone(true))
                         window.location.reload();
                     }
                     break;
@@ -59,7 +122,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
         }
     }
 });
-const initPassList = function (list = [], warning = '您还没有保存过密码') {
+const initPassList = function (list = [], warning = geti18n("string_no_account")) {
     passList = list;
     if(state.is_unlock === 'true'){
         if(list.length === 0){
@@ -74,10 +137,10 @@ const initPassList = function (list = [], warning = '您还没有保存过密码
 function createNewPassRows(list) {
     let str = '';
     if(!list || list.size === 0){
-        return "<tr><td colspan='3'>"+'您还没有保存过密码'+"</td></tr>";
+        return "<tr><td colspan='3'>"+geti18n("string_no_account")+"</td></tr>";
     }
     list.forEach((item)=>{
-        let s = "<tr><td>"+item.host+"</td><td>"+item.account+"</td><td>"+item.password+"</td></tr>";
+        let s = "<tr><td title="+item.host+">"+item.host+"</td><td title="+item.account+">"+item.account+"</td><td title="+item.password+">"+item.password+"</td></tr>";
         str+=s;
     });
     return str;
@@ -85,9 +148,6 @@ function createNewPassRows(list) {
 }
 //注册
 const register = function () {
-    console.log("md5key:"+md5key);
-    console.log("md5iv:"+iv);
-    console.log("开始注册");
     let args = md5key;
     let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.EXEC_REGISTER,args);
     sendMsg(intent)
@@ -102,6 +162,7 @@ const unlock = function () {
     };
     let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.EXEC_UNLOCK,args);
     sendMsg(intent);
+
     //拉取密码列表
     intent.action = ActionEnum.EXEC_PULL_LIST;
     intent.data = md5key;
@@ -109,53 +170,11 @@ const unlock = function () {
 };
 //拉取密码列表
 const pullList = function () {
-    let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.EXEC_PULL_LIST,md5key);
+    let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.EXEC_PULL_LIST,'');
     //拉取密码列表
     sendMsg(intent);
 };
 
-//生成随机字符串
-const randomString = function (len) {
-    let text = "",
-        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (let i = 0; i < len; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
-};
-
-// const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412');
-
-//aes加密
-const Encrypt = function (data, key) {
-    key = CryptoJS.enc.Utf8.parse(key);
-    var iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
-    var encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key,
-        {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-    return encrypted.toString();
-};
-
-//aes解密
-const Decrypt = function (data, key) {
-    key = CryptoJS.enc.Utf8.parse(key);
-    var iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
-    var decrypted = CryptoJS.AES.decrypt(data, key,
-        {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-    var decryptedData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
-    return decryptedData;
-};
-
-const md5Encrypt = function (data) {
-  return CryptoJS.MD5(data).toString();
-};
 
 
 //发送消息
@@ -181,9 +200,9 @@ const download = function () {
     $('#download').css('display','none');
     $('#select-key').css('display','block');
     //更新提示语为：选择密钥文件
-    $('#tip').html("选择密钥文件")
+    $('#tip').html(geti18n("string_select_file"))
 };
-
+//搜索
 const search = function () {
     let key_wrold = inputSearch.val().trim();
     if(key_wrold === ''){
@@ -206,7 +225,6 @@ const search = function () {
 function coverString(subStr,str){
     return str.toLowerCase().indexOf(subStr.toLowerCase()) > -1;
 }
-
 
 
 
@@ -254,6 +272,9 @@ key.on('change',function () {
 });
 //初始化布局
 $(function () {
+    //设置钱包地址
+    wallet.val(background.globle_data.user_address);
+    
     $('[data-i18n]').each(function() {
         let el = $(this),
             resourceName = el.data('i18n'),
@@ -290,37 +311,3 @@ btnSearch.click(search);
 btnUpload.click(upload);
 btnPullList.click(pullList);
 
-
-const SourceEnum = {
-    CONTENT: 'content',
-    BACKGROUND: 'background',
-    OPTIONS: 'options'
-};
-
-const ActionEnum = {
-    EXEC_REGISTER: 'exec_register',
-    EXEC_UNLOCK: 'exec_unlock',
-    EXEC_UPLOAD: 'exec_upload',
-    EXEC_PULL_LIST: 'exec_pull_list',
-    ACTION_NOTIFY: 'action_notify',
-    ACTION_STATE_NET: 'action_state_net',
-    ACTION_STATE_REGISTER: 'action_state_register',
-    ACTION_STATE_UNLOCK: 'action_state_unlock',
-    ACTION_DATA_ADDRESS: 'action_data_address',
-    ACTION_GET_PASSWORD: 'action_get_password',
-    ACTION_GENERATE_PASSWORD: 'action_generate_password',
-    ACTION_DEFAULT: 'action_default',
-};
-class Intent {
-    constructor(to, action, data, from = SourceEnum.OPTIONS){
-        this.to = to;
-        this.action = action;
-        this.data = data;
-        this.from = from;
-    }
-}
-
-
-function geti18n(key) {
-    return chrome.i18n.getMessage(key);
-}

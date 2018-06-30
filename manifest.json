@@ -24,9 +24,9 @@
     "default_popup": "options.html"
   },
   "icons": {
-    "16": "images/globalGoogle16.png",
-    "48": "images/globalGoogle48.png",
-    "128": "images/globalGoogle128.png"
+    "16": "images/16.png",
+    "48": "images/48.png",
+    "128": "images/128.png"
   },
   "web_accessible_resources": ["inpage.js","images/*.png"]
 }

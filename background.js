@@ -1,19 +1,83 @@
-console.log("background.js loading");
-//background需要存储的数据
-//状态类： 当前用户状态：钱包地址、钱包余额、
-//        当前网络状态：主网状态实时监控
-//        popup状态：是否解锁
-//数据持久化： 未上传的Pass信息（加密存储）、同步下来的Pass信息，未上传的Pass个数、
-//            是否第一次使用，是否下载过密码文件，是否注册
-//密钥不持久，只保存在options.js中
 
+const SourceEnum = {
+    CONTENT: 'content',
+    BACKGROUND: 'background',
+    OPTIONS: 'options'
+};
+const ActionEnum = {
+    EXEC_REGISTER: 'exec_register',
+    EXEC_UNLOCK: 'exec_unlock',
+    EXEC_UPLOAD: 'exec_upload',
+    EXEC_PULL_LIST: 'exec_pull_list',
+    ACTION_NOTIFY: 'action_notify',
+    ACTION_STATE_NET: 'action_state_net',
+    ACTION_STATE_REGISTER: 'action_state_register',
+    ACTION_STATE_UNLOCK: 'action_state_unlock',
+    ACTION_DATA_ADDRESS: 'action_data_address',
+    ACTION_GET_PASSWORD: 'action_get_password',
+    ACTION_GENERATE_PASSWORD: 'action_generate_password',
+    ACTION_DEFAULT: 'action_default',
+    ACTION_SET_ACCOUNT: 'action_set_account',
+    ACTION_SET_PASSWORD: 'action_set_password'
+};
+class Intent {
+    constructor(to, action, data, from){
+        this.to = to;
+        this.action = action;
+        this.data = data;
+        this.from = from;
+    }
+}
 class Pass {
-    constructor(host, account, password){
+    constructor(host='', account='', password=''){
         this.host = host;
         this.account = account;
         this.password = password;
     }
 }
+//aes加密
+const Encrypt = function (data, key) {
+    try{
+        key = CryptoJS.enc.Utf8.parse(key);
+        let iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
+        let encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key,
+            {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        return encrypted.toString();
+    }catch (err){
+        console.error(err);
+    }
+
+};
+//aes解密
+const Decrypt = function (data, key) {
+    try{
+        key = CryptoJS.enc.Utf8.parse(key);
+        let iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
+        let decrypted = CryptoJS.AES.decrypt(data, key,
+            {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        var decryptedData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+        return decryptedData;
+    }catch (err){
+        console.error(err)
+    }
+
+};
+//md5加密
+const md5Encrypt = function (data) {
+    return CryptoJS.MD5(data).toString();
+};
+function geti18n(key) {
+    return chrome.i18n.getMessage(key);
+}
+
 let pass = new Pass(),
     tabList = new Map(), //所有加载了content.js的tab
     storage = chrome.storage.local,
@@ -25,7 +89,7 @@ let pass = new Pass(),
         set(target, property, value){
             console.log(`set props: ${property} to ${value}`);
             target[property] = value;
-            if (target.host && target.account && target.password) {
+            if (target.host!==''&& target.account !==''&& target.password!=='') {
                 console.log('设置完毕'+JSON.stringify(target));
                 //同一个host，保存多次，只取最后一次
                 saveToStorage(target);
@@ -39,8 +103,8 @@ window.globle_state = {
     is_unlock: false,   //是否解锁
     is_registered: false, //是否注册
     unlock_time: 0,         //解锁时间
-    unlock_timer: 5*60*1000,   //解锁时长，默认1min for test
-    autounlock: false,      //自动解锁
+    unlock_timer: 5*60*1000,   //解锁时长，默认5min
+    autounlock: false,      //TODO 自动解锁
 };
 window.globle_data = {
     user_address: '',   //用户地址
@@ -108,7 +172,6 @@ window.data_proxy = new Proxy(globle_data, {
 chrome.runtime.onStartup.addListener(function () {
     console.log("Extension onStartup");
 });
-
 chrome.runtime.onInstalled.addListener(function () {
     console.log("Extension onInstalled");
     //初始化菜单
@@ -134,6 +197,58 @@ function setUpGlobleData() {
         globle_data.sync_pass_count = Number.parseInt(result.local_pass_count);
     });
 }
+function setUpContextMenus() {
+    chrome.contextMenus.create({
+        title: "保存该用户名",
+        id: '0',
+        type: "normal",
+        contexts: ["editable"],
+        onclick: onMenuItemClick,
+    },function () {
+        // console.log("MenuItem init")
+    });
+    chrome.contextMenus.create({
+        title: "保存该密码",
+        id: '1',
+        type: 'normal',
+        contexts: ["editable"],
+        onclick: onMenuItemClick,
+    },function () {
+        // console.log("MenuItem init")
+    });
+    chrome.contextMenus.create({
+        title: "生成随机密码并保存",
+        id: '2',
+        type: "normal",
+        contexts: ["editable"],
+        onclick: onMenuItemClick,
+    },function () {
+        // console.log("MenuItem init")
+    });
+
+    chrome.contextMenus.create({
+        title: "填入用户名",
+        id: '3',
+        type: "normal",
+        contexts: ["editable"],
+        onclick: onMenuItemClick,
+    },function () {
+        // console.log("MenuItem init")
+    });
+
+    chrome.contextMenus.create({
+        title: "填入密码",
+        id: '4',
+        type: "normal",
+        contexts: ["editable"],
+        onclick: onMenuItemClick,
+    },function () {
+        // console.log("MenuItem init")
+    });
+
+
+}
+
 //接收消息
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     console.log(JSON.stringify(message));
@@ -203,6 +318,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
                 case ActionEnum.EXEC_UNLOCK:
                     data_proxy.key = message.data.key;
                     data_proxy.md5_key = message.data.md5key;
+                    console.log(data_proxy.md5_key)
                     request.data = {args: message.data.md5key};
                     sendMsgToTab(request);
                     break;
@@ -224,8 +340,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
                     sendMsgToTab(request);
                     break;
                 case ActionEnum.EXEC_PULL_LIST:
+                    console.log(data_proxy.md5_key);
                     if(!message.data){
-                        request.data = data_proxy.md5_key;
+                        request.data = {args: data_proxy.md5_key};
                     }
                     sendMsgToTab(request);
                     break;
@@ -257,6 +374,9 @@ const sendMsgToTab = function (message) {
             tabList.size > 0 ? resolve() : reject();
         });
     }).finally(()=>{
+        if(tabList.size === 0){
+            showNotification(geti18n("notify_no_content"))
+        }
         chrome.tabs.sendMessage([...tabList.keys()][0], message);
     });
 };
@@ -283,7 +403,7 @@ const showNotification = function(message){
                 type: 'basic',
                 title: 'PassKeeper',
                 message: message,
-                iconUrl: 'images/globalGoogle48.png',
+                iconUrl: 'images/128.png',
             };
             chrome.notifications.getAll(function (nids) {
                 if(nids instanceof Object){
@@ -302,64 +422,13 @@ const showNotification = function(message){
                     setTimeout(function(){
                         canUpdated = false;
                         chrome.notifications.clear(nId, function () {});
-                    }, 1500);
+                    }, 2000);
                 });
             }
 
         }
     });
 };
-function setUpContextMenus() {
-    chrome.contextMenus.create({
-        title: "保存该用户名",
-        id: '0',
-        type: "normal",
-        contexts: ["editable"],
-        onclick: onMenuItemClick,
-    },function () {
-        // console.log("MenuItem init")
-    });
-    chrome.contextMenus.create({
-        title: "保存该密码",
-        id: '1',
-        type: 'normal',
-        contexts: ["editable"],
-        onclick: onMenuItemClick,
-    },function () {
-        // console.log("MenuItem init")
-    });
-    chrome.contextMenus.create({
-        title: "生成随机密码并保存",
-        id: '2',
-        type: "normal",
-        contexts: ["editable"],
-        onclick: onMenuItemClick,
-    },function () {
-        // console.log("MenuItem init")
-    });
-
-    chrome.contextMenus.create({
-        title: "填入用户名",
-        id: '3',
-        type: "normal",
-        contexts: ["editable"],
-        onclick: onMenuItemClick,
-    },function () {
-        // console.log("MenuItem init")
-    });
-
-    chrome.contextMenus.create({
-        title: "填入密码",
-        id: '4',
-        type: "normal",
-        contexts: ["editable"],
-        onclick: onMenuItemClick,
-    },function () {
-        // console.log("MenuItem init")
-    });
-
-
-}
 /**
  *
  * @param o {"editable":true,"frameId":0,"menuItemId":"0","pageUrl":"https://stackoverflow.com/","selectionText":"Search"}
@@ -396,7 +465,9 @@ function onMenuItemClick(o, tab) {
             proxy.password = password2;
             break;
         case '3':
+            intent.action = ActionEnum.ACTION_SET_ACCOUNT;
         case '4':
+            intent.action = ActionEnum.ACTION_SET_PASSWORD;
             console.log(o.menuItemId === '3'?"用户名":"密码");
             //判断是否解锁
             if (state_proxy.is_unlock === true || state_proxy.is_unlock === 'true') {
@@ -405,12 +476,16 @@ function onMenuItemClick(o, tab) {
                         return item;
                     }
                 });
-                intent.action = ActionEnum.ACTION_GENERATE_PASSWORD;
-                //TODO 多个密码保存的情况
-                intent.data = o.menuItemId === '3'?results[0].account:results[0].password;
-                chrome.tabs.sendMessage(tab.id, intent, function (resp) {
-                    console.log(resp);
-                });
+                console.log(results);
+                if(results instanceof Pass || (results instanceof Array && results.length>0)){
+                    //TODO 多个密码保存的情况
+                    intent.data = o.menuItemId === '3'?results[0].account:results[0].password;
+                    chrome.tabs.sendMessage(tab.id, intent);
+                }else {
+                    //TODO 离线保存
+                    showNotification(geti18n("notify_no_host"))
+                }
+
             }else {
                 showNotification(geti18n("notify_please_unlock"))
             }
@@ -419,7 +494,7 @@ function onMenuItemClick(o, tab) {
 }
 
 
-//生成密码
+//生成密码, 默认长度8
 function generatePassword(length = 8) {
     let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
         retVal = "";
@@ -431,8 +506,6 @@ function generatePassword(length = 8) {
 function getHost(url) {
     return url.replace('http://','').replace('https://','').split(/[/?#]/)[0];
 }
-
-
 
 
 //保存未同步的Pass信息
@@ -460,7 +533,7 @@ const saveToStorage = function (pass) {
     },function () {
         storage.get(['local_pass'],(result)=>{
             console.log('保存local_pass:'+JSON.stringify(result))
-        })
+        });
     });
     storage.set({
         ['local_pass_count']: data_proxy.sync_pass_count
@@ -469,6 +542,8 @@ const saveToStorage = function (pass) {
             console.log('保存local_pass_count'+JSON.stringify(result))
         }));
     });
+
+
 };
 const saveSyncStorage = function () {
     storage.set({
@@ -511,78 +586,3 @@ const saveState = function (key, value) {
 
 
 
-
-const SourceEnum = {
-    CONTENT: 'content',
-    BACKGROUND: 'background',
-    OPTIONS: 'options'
-};
-
-const ActionEnum = {
-    EXEC_REGISTER: 'exec_register',
-    EXEC_UNLOCK: 'exec_unlock',
-    EXEC_UPLOAD: 'exec_upload',
-    EXEC_PULL_LIST: 'exec_pull_list',
-    ACTION_NOTIFY: 'action_notify',
-    ACTION_STATE_NET: 'action_state_net',
-    ACTION_STATE_REGISTER: 'action_state_register',
-    ACTION_STATE_UNLOCK: 'action_state_unlock',
-    ACTION_DATA_ADDRESS: 'action_data_address',
-    ACTION_GET_PASSWORD: 'action_get_password',
-    ACTION_GENERATE_PASSWORD: 'action_generate_password',
-    ACTION_DEFAULT: 'action_default',
-};
-
-class Intent {
-    constructor(to, action, data, from){
-        this.to = to;
-        this.action = action;
-        this.data = data;
-        this.from = from;
-    }
-}
-
-//aes加密
-const Encrypt = function (data, key) {
-    try{
-        key = CryptoJS.enc.Utf8.parse(key);
-        var iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
-        var encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key,
-            {
-                iv: iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
-        return encrypted.toString();
-    }catch (err){
-        console.error(err);
-    }
-
-};
-
-//aes解密
-const Decrypt = function (data, key) {
-    try{
-        key = CryptoJS.enc.Utf8.parse(key);
-        var iv = CryptoJS.enc.Utf8.parse('16-Bytes--String');
-        var decrypted = CryptoJS.AES.decrypt(data, key,
-            {
-                iv: iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            });
-        var decryptedData = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
-        return decryptedData;
-    }catch (err){
-        console.error(err)
-    }
-
-};
-
-const md5Encrypt = function (data) {
-    return CryptoJS.MD5(data).toString();
-};
-
-function geti18n(key) {
-    return chrome.i18n.getMessage(key);
-}

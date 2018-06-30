@@ -6,7 +6,9 @@
 </head>
 <body>
     <div id="main">
-        <div class="logo container">Logo
+        <div class="logo container">
+            <!--<img src="images/128.png" id="icon"> -->
+            <span class="title">PassKeeper</span>
             <hr>
         </div>
         <div class="wallet container">
@@ -15,17 +17,17 @@
         </div>
 
         <div class="func-area container">
-            <p id="tip">选择你的密钥文件:</p>
+            <p id="tip" data-i18n="string_select_file">选择你的密钥文件:</p>
             <label class="file" id="select-key">
-                <span>选择密钥文件</span>
+                <span data-i18n="string_select_file">选择密钥文件</span>
                 <form id="form">
                     <input type="file" id="key" accept=".k">
                 </form>
             </label>
             <input type="text" id="show-key" class="hidden user-wallet" readonly="readonly" disabled>
-            <button class="btn btn-block" id="unlock" disabled>解锁</button>
-            <button class="btn btn-block" id="register" disabled>注册</button>
-            <a class="btn btn-block" id="download">下载密码文件</a>
+            <button class="btn btn-block" id="unlock" disabled data-i18n="string_unlock">解锁</button>
+            <button class="btn btn-block" id="register" disabled data-i18n="string_register">注册</button>
+            <a class="btn btn-block" id="download" data-i18n="string_download">下载密码文件</a>
         </div>
         <div class="show container hidden">
             <div class="top">
@@ -33,17 +35,16 @@
                 <button class="btn btn-block" id="pull-list" data-i18n="string_pull">拉取密码列表</button>
             </div>
             <div class="header">
-                <input id="input-search" type="text" placeholder="搜索密码"><button id="btn-search">Search</button>
+                <input id="input-search" type="text" placeholder="Search"><button id="btn-search" data-i18n="string_search">Search</button>
             </div>
             <div class="content">
                 <table>
-                    <thead>
-                        <th>网站</th>
-                        <th>用户名</th>
-                        <th>密码</th>
+                    <thead id="t-head">
+                        <th data-i18n="string_host">网站</th>
+                        <th data-i18n="string_account">用户名</th>
+                        <th data-i18n="string_password">密码</th>
                     </thead>
                     <tbody id="t-body">
-
                     </tbody>
                 </table>
             </div>

@@ -1,39 +1,60 @@
 {
   "notify_register_start": {
-    "message": "Start Register,Please Complete The Transaction."
+    "message": "Start Register"
   },
   "notify_register_success":{
-    "message": "Register Success."
+    "message": "Register Success"
   },
   "notify_register_failed":{
-    "message": "Register Failed, Please Retry."
+    "message": "Register Failed, Please Retry"
   },
   "notify_unlock_start": {
     "message": "Start Unlock Account"
   },
   "notify_unlock_success": {
-    "message": "Unlock Account Success."
+    "message": "Unlock Success"
   },
   "notify_unlock_failed": {
-    "message": "Unlock Account Failed, Please Retry."
+    "message": "Unlock Failed, Please Retry"
   },
   "notify_pull_start": {
-    "message": "Start Pull Pass."
+    "message": "Start Pull Pass List"
   },
   "notify_pull_success": {
-    "message": "Pull Pass Success."
+    "message": "Pull Success"
   },
   "notify_pull_failed": {
-    "message": "Pull Pass Failed."
+    "message": "Pull Failed"
   },
   "notify_upload_start": {
-    "message": "Start Upload."
+    "message": "Start Upload"
   },
   "notify_upload_success": {
-    "message": "Upload Success."
+    "message": "Upload Success"
   },
   "notify_upload_failed": {
-    "message": "Upload Failed."
+    "message": "Upload Failed, Please Retry"
+  },
+  "notify_popup": {
+    "message": "Please continue the transaction on popup page"
+  },
+  "notify_insufficient_balance": {
+    "message": "Insufficient Account Banlance "
+  },
+  "notify_select_right_key": {
+    "message": "Please Select Right Key File"
+  },
+  "notify_please_unlock": {
+    "message": "This Function Need Unlock Account First."
+  },
+  "notify_no_host": {
+    "message": "No Pass On This Is Website"
+  },
+  "notify_search_failed":{
+    "message": "No Filter Result"
+  },
+  "notify_no_content":{
+    "message":  "No Tab Load The content.js, Can't Execute Functions"
   },
   "string_register": {
     "message": "Register"
@@ -42,30 +63,40 @@
     "message": "Unlock"
   },
   "string_pull": {
-    "message": "Pull Pass"
+    "message": "Pull Pass List"
   },
   "string_upload": {
-    "message": "Upload Un-Sync Pass"
+    "message": "Upload Local Pass"
   },
   "string_search": {
     "message": "Search"
   },
+  "string_download":{
+    "message": "Download Key File"
+  },
   "string_host": {
-    "message": "host"
+    "message": "Website"
   },
   "string_account": {
-    "message": "account"
+    "message": "Account"
   },
   "string_password": {
-    "message": "password"
+    "message": "Password"
   },
   "string_current_account": {
     "message": "Account"
   },
   "string_select_file": {
-    "message": "Select Key File"
+    "message": "Select Key FIle"
   },
   "string_select_wrong_file": {
-    "message": "Select Wrong Key File"
+    "message": "Please Select Right Key FIle"
+  },
+  "string_pass_list_empty":{
+    "message": "Local Pass List Empty"
+  },
+  "string_no_account": {
+    "message": "No Account Found"
   }
+
 }

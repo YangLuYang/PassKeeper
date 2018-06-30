@@ -22,5 +22,6 @@
 链上存储通过您独一无二对密钥文件加密过的密码信息，当您需要填写密码时，打开插件，使用密钥文件，即可获得密码信息。最大程度保障您的密码安全。
 
 TODO LIST
+change password
 auto unlock
 support one website multiple account

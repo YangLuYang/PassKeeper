@@ -1,11 +1,8 @@
 'use strict';
 /***
- *
  * 所有涉及密码的操作
  * 均先验证用户
- *
  */
-
 //用户信息
 class User {
     constructor(from, key){
@@ -32,7 +29,6 @@ class User {
     }
 }
 //账户信息
-//password通过前端密钥文件的加密
 class Pass {
     constructor(host, account, password){
         if(this.verifyHost(host)){
@@ -98,16 +94,10 @@ class PassKeeperContract {
         })
     }
 
-    /**
-     * 新建用户
-     * 验证用户
-     * 设置（更新）密码
-     * 获取密码
-     * 删除密码
-     */
 
     init(){
         this.configs.set("admin", Blockchain.transaction.from);
+        //TODO update password
     }
 
     /**

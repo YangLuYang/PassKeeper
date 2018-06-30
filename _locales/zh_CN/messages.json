@@ -47,14 +47,20 @@
   "notify_please_unlock": {
     "message": "此功能需要解锁账户"
   },
+  "notify_no_host": {
+    "message": "没有此网站的密码信息"
+  },
   "notify_search_failed":{
     "message": "没有符合筛选要求的账户信息"
+  },
+  "notify_no_content":{
+    "message": "当前不存在加载了content.js的页面，无法执行功能"
   },
   "string_register": {
     "message": "注册"
   },
   "string_unlock": {
-    "message": "解锁账户"
+    "message": "解锁"
   },
   "string_pull": {
     "message": "拉取密码列表"
@@ -64,6 +70,9 @@
   },
   "string_search": {
     "message": "搜索"
+  },
+  "string_download":{
+    "message": "下载密钥文件"
   },
   "string_host": {
     "message": "网站"
@@ -85,6 +94,9 @@
   },
   "string_pass_list_empty":{
     "message": "待上传的本地密码列表为空"
+  },
+  "string_no_account": {
+    "message": "无密码"
   }
 
 }

@@ -1,12 +1,9 @@
-/**
- * Created by apple on 2018/6/2.
- */
 console.log("content.js is loading");
 let chainnetConfig = {
     mainnet: {
         name: "主网",
-        contractAddress: "n1ojzVwAyRusdL8QUMTHft4rYRA5BSkYMt3",
-        txhash: "9d73a4e7d54559c37af6f969c8f5b3f9fa4409f92134280b04c90a1cb739fcf6",
+        contractAddress: "n1gW7f5qtjapLVj6mXHkMnHCtDFDG7VrSpR",
+        txhash: "6ca8e47ab20ce0de3d4e0b1a7506300e8c699e632af1f56538e3d6d9451d95de",
         host: "https://mainnet.nebulas.io",
         payhost: "https://pay.nebulas.io/api/mainnet/pay"
     },
@@ -17,13 +14,11 @@ let chainnetConfig = {
         payhost: "https://pay.nebulas.io/api/pay"
     }
 };
-let chain = "testnet",
+let chain = "mainnet",
     nebState,
     chainInfo = chainnetConfig[chain],
     nebulas = require("nebulas"),
-    NebPay = require("nebpay"),
     neb = new nebulas.Neb(),
-    nebPay = new NebPay(),
     HttpRequest = nebulas.HttpRequest;
 neb.setRequest(new HttpRequest(chainInfo.host));
 
@@ -32,7 +27,6 @@ let user = {
         password: "",
         balance: null,
         txhash: null
-
     };
 
 const SourceEnum = {
@@ -40,7 +34,6 @@ const SourceEnum = {
     BACKGROUND: 'background',
     OPTIONS: 'options'
 };
-
 const ActionEnum = {
     EXEC_REGISTER: 'exec_register',
     EXEC_UNLOCK: 'exec_unlock',
@@ -54,6 +47,8 @@ const ActionEnum = {
     ACTION_GET_PASSWORD: 'action_get_password',
     ACTION_GENERATE_PASSWORD: 'action_generate_password',
     ACTION_DEFAULT: 'action_default',
+    ACTION_SET_ACCOUNT: 'action_set_account',
+    ACTION_SET_PASSWORD: 'action_set_password'
 };
 class Intent {
     constructor(to, action, data, from){
@@ -63,11 +58,26 @@ class Intent {
         this.from = from;
     }
 }
+class Pass {
+    constructor(host, account, password){
+        this.host = host;
+        this.account = account;
+        this.password = password;
+    }
+
+    toString(){
+        return JSON.stringify(this);
+    }
+}
+function geti18n(key) {
+    return chrome.i18n.getMessage(key);
+}
+
 
 let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.ACTION_DEFAULT,'',SourceEnum.CONTENT);
 
 
-//设置inpage.js
+//set inpage.js
 // function setupInjection (file) {
 //     let s = document.createElement('script');
 //     s.src = chrome.extension.getURL(file);
@@ -112,15 +122,18 @@ chrome.runtime.onMessage.addListener(
                         //获取密码
                     case ActionEnum.ACTION_GET_PASSWORD:
                         const pwd = $(document.activeElement).val();
-                        console.log(pwd);
+                        // console.log(pwd);
                         sendResponse(pwd);
                         break;
                         //生成密码
                     case ActionEnum.ACTION_GENERATE_PASSWORD:
                         let input = $(document.activeElement);
                         input.val(request.data);
-                        console.log('generatePassword:'+request.data);
                         sendResponse(input.val());
+                        break;
+                    case ActionEnum.ACTION_SET_ACCOUNT:
+                    case ActionEnum.ACTION_SET_PASSWORD:
+                        $(document.activeElement).val(request.data);
                         break;
                 }
             }
@@ -129,9 +142,7 @@ chrome.runtime.onMessage.addListener(
         }
     });
 
-function geti18n(key) {
-    return chrome.i18n.getMessage(key);
-}
+
 /**
  * 注册
  * @param message {args: 'password'}
@@ -151,7 +162,7 @@ const postUser = function(args){
     }, "*");
 
     window.addEventListener('message', function(e) {
-        console.log("message received, msg.data: " + JSON.stringify(e));
+        // console.log("message received, msg.data: " + JSON.stringify(e));
         try{
             if(!!e.data.data.txhash){
                 console.log( "Transaction hash:\n" +  JSON.stringify(e.data.data.txhash.txhash,null,'\t'));
@@ -166,55 +177,6 @@ const postUser = function(args){
     });
 
 };
-let intervalTime = 4;
-function getTranResult(txhash,func,args) {
-    let timer = setInterval(function () {
-        neb.api.getTransactionReceipt({
-            hash: txhash
-        }).then(function (receipt) {
-            console.log(receipt);
-            let intent = new Intent(SourceEnum.BACKGROUND, ActionEnum.ACTION_NOTIFY, '', SourceEnum.CONTENT);
-            if(receipt.status === 1){
-                if(func === 'setUser'){
-                    //确认交易
-                    fetchUserState().then(function (result) {
-                        if(result.result === "true"){
-                            intent.data = geti18n("notify_register_success");
-                        }else if(result.result === "false"){
-                            intent.data = "notify_register_failed";
-                        }
-                        sendMsg(intent);
-                        intent.data = {
-                            is_registered: result.result === "true"
-                        };
-                        intent.action = ActionEnum.ACTION_STATE_REGISTER;
-                        sendMsg(intent);
-                    });
-                }else if(func === 'setPass'){
-                    intent.action = ActionEnum.EXEC_UPLOAD;
-                    intent.data = true;
-                    intent.to = SourceEnum.BACKGROUND;
-                    sendMsg(intent);
-
-                    getAllPass(args)
-
-                }
-                clearInterval(timer);
-            }
-            if(receipt.execute_result.startsWith("Error")){
-                clearInterval(timer);
-                intent.data = receipt.execute_result;
-                sendMsg(intent);
-            }
-            if(receipt.status === 0){
-                clearInterval(timer);
-            }
-        }).catch(function (err) {
-            console.log(err);
-            clearInterval(timer);
-        })
-    }, intervalTime * 1000);
-}
 function setUser(password) {
     //发送通知
     intent.data = geti18n("notify_popup");
@@ -235,9 +197,9 @@ function unlock(password) {
     fetchUnlockResp(JSON.stringify([password.args]))
         .then(function (state) {
             intent.action = ActionEnum.ACTION_NOTIFY;
-            intent.data = state === true? '解锁成功' : '解锁失败，请重新选择密钥文件';
+            intent.data = state === true? geti18n("notify_unlock_success") : geti18n("notify_unlock_failed");
             sendMsg(intent);
-            console.log(state);
+            // console.log(state);
             intent.action = ActionEnum.ACTION_STATE_UNLOCK;
             intent.to = SourceEnum.BACKGROUND;
             intent.data = {
@@ -249,7 +211,7 @@ function unlock(password) {
             sendMsg(intent);
         },function (err) {
             intent.action = ActionEnum.ACTION_NOTIFY;
-            intent.data = "解锁异常"+JSON.stringify(err);
+            intent.data = JSON.stringify(err);
             sendMsg(intent);
         });
 }
@@ -259,7 +221,7 @@ function unlock(password) {
 //  */
 function getAllPass(password) {
     intent.action = ActionEnum.ACTION_NOTIFY;
-    intent.data = "正在拉取密码列表";
+    intent.data = geti18n("notify_pull_start");
     sendMsg(intent);
     //确认账户信息
     fetchUserState()
@@ -281,7 +243,7 @@ function getAllPass(password) {
             sendMsg(intent);
             //通知
             intent.action = ActionEnum.ACTION_NOTIFY;
-            intent.data = "密码列表拉取成功";
+            intent.data = geti18n("notify_pull_success");
             sendMsg(intent)
         })
         .catch(function (err) {
@@ -321,12 +283,6 @@ function uploadPass(list, password) {
                 console.log( "Transaction hash:\n" +  JSON.stringify(e.data.data.txhash.txhash,null,'\t'));
                 user.txhash = e.data.data.txhash.txhash;
                 //验证交易是否成功
-
-                intent.action = ActionEnum.ACTION_NOTIFY;
-                intent.data = geti18n("notify_upload_success");
-                intent.to = SourceEnum.BACKGROUND;
-                sendMsg(intent);
-
                 getTranResult(user.txhash,"setPass",password);
             }
         }catch (err){
@@ -335,6 +291,61 @@ function uploadPass(list, password) {
 
     });
 
+}
+
+let intervalTime = 5;
+function getTranResult(txhash,func,args) {
+    let timer = setInterval(function () {
+        neb.api.getTransactionReceipt({
+            hash: txhash
+        }).then(function (receipt) {
+            console.log(receipt);
+            let intent = new Intent(SourceEnum.BACKGROUND, ActionEnum.ACTION_NOTIFY, '', SourceEnum.CONTENT);
+            if(receipt.status === 1){
+                if(func === 'setUser'){
+                    //确认交易
+                    fetchUserState().then(function (result) {
+                        if(result.result === "true"){
+                            intent.data = geti18n("notify_register_success");
+                        }else if(result.result === "false"){
+                            intent.data = geti18n("notify_register_failed");
+                        }
+                        sendMsg(intent);
+                        intent.data = {
+                            is_registered: result.result === "true"
+                        };
+                        intent.action = ActionEnum.ACTION_STATE_REGISTER;
+                        sendMsg(intent);
+                    });
+                }else if(func === 'setPass'){
+                    intent.action = ActionEnum.ACTION_NOTIFY;
+                    intent.data = geti18n("notify_upload_success");
+                    intent.to = SourceEnum.BACKGROUND;
+                    sendMsg(intent);
+
+                    intent.action = ActionEnum.EXEC_UPLOAD;
+                    intent.data = true;
+                    intent.to = SourceEnum.BACKGROUND;
+                    sendMsg(intent);
+
+                    getAllPass(args)
+
+                }
+                clearInterval(timer);
+            }
+            if(receipt.execute_result.startsWith("Error")){
+                clearInterval(timer);
+                intent.data = receipt.execute_result;
+                sendMsg(intent);
+            }
+            if(receipt.status === 0){
+                clearInterval(timer);
+            }
+        }).catch(function (err) {
+            console.log(err);
+            clearInterval(timer);
+        })
+    }, intervalTime * 1000);
 }
 
 //获取用户钱包地址
@@ -348,7 +359,7 @@ function fetchWalletInfo() {
               address: user.address
             };
             sendMsg(intent);
-            console.log("获取用户钱包地址:"+intent.data);
+            // console.log("获取用户钱包地址:"+intent.data);
         }
     });
     window.postMessage({
@@ -392,7 +403,6 @@ function fetchPassList(password) {
                 return;
             }
             let list = JSON.parse(resp.result);
-            console.log("获取密码列表成功 "+JSON.stringify(list));
             resolve(list);
         }).catch(function (err) {
             reject(err)
@@ -529,15 +539,4 @@ function init() {
 
 }
 
-class Pass {
-    constructor(host, account, password){
-        this.host = host;
-        this.account = account;
-        this.password = password;
-    }
-
-    toString(){
-        return JSON.stringify(this);
-    }
-}
 
