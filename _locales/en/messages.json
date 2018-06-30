@@ -97,6 +97,21 @@
   },
   "string_no_account": {
     "message": "No Account Found"
+  },
+  "menu_save_account":{
+    "message": "Save This Account"
+  },
+  "menu_save_password":{
+    "message": "Save This Password"
+  },
+  "menu_generate_password":{
+    "message": "Generate Password & Save"
+  },
+  "menu_set_account":{
+    "message": "Set Account"
+  },
+  "menu_set_password":{
+    "message": "Set Password"
   }
 
 }

@@ -97,5 +97,20 @@
   },
   "string_no_account": {
     "message": "无密码"
+  },
+  "menu_save_account":{
+    "message": "保存该用户名"
+  },
+  "menu_save_password":{
+    "message": "保存该密码"
+  },
+  "menu_generate_password":{
+    "message": "生成随机密码并保存"
+  },
+  "menu_set_account":{
+    "message": "填入用户名"
+  },
+  "menu_set_password":{
+    "message": "填入密码"
   }
 }

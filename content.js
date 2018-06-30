@@ -90,6 +90,7 @@ let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.ACTION_DEFAULT,'',Sourc
 // setupInjection (file);
 
 const sendMsg = function(message){
+    console.log(message);
     chrome.runtime.sendMessage(message);
 };
 
@@ -335,10 +336,9 @@ function getTranResult(txhash,func,args) {
             }
             if(receipt.execute_result.startsWith("Error")){
                 clearInterval(timer);
-                intent.data = receipt.execute_result;
-                sendMsg(intent);
             }
             if(receipt.status === 0){
+                console.log(receipt.execute_result);
                 clearInterval(timer);
             }
         }).catch(function (err) {

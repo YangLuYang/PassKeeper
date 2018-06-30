@@ -199,7 +199,7 @@ function setUpGlobleData() {
 }
 function setUpContextMenus() {
     chrome.contextMenus.create({
-        title: "保存该用户名",
+        title: geti18n("menu_save_account"),
         id: '0',
         type: "normal",
         contexts: ["editable"],
@@ -208,7 +208,7 @@ function setUpContextMenus() {
         // console.log("MenuItem init")
     });
     chrome.contextMenus.create({
-        title: "保存该密码",
+        title: geti18n("menu_save_password"),
         id: '1',
         type: 'normal',
         contexts: ["editable"],
@@ -217,7 +217,7 @@ function setUpContextMenus() {
         // console.log("MenuItem init")
     });
     chrome.contextMenus.create({
-        title: "生成随机密码并保存",
+        title: geti18n("menu_generate_password"),
         id: '2',
         type: "normal",
         contexts: ["editable"],
@@ -227,7 +227,7 @@ function setUpContextMenus() {
     });
 
     chrome.contextMenus.create({
-        title: "填入用户名",
+        title: geti18n("menu_set_account"),
         id: '3',
         type: "normal",
         contexts: ["editable"],
@@ -237,7 +237,7 @@ function setUpContextMenus() {
     });
 
     chrome.contextMenus.create({
-        title: "填入密码",
+        title: geti18n("menu_set_password"),
         id: '4',
         type: "normal",
         contexts: ["editable"],
@@ -318,7 +318,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
                 case ActionEnum.EXEC_UNLOCK:
                     data_proxy.key = message.data.key;
                     data_proxy.md5_key = message.data.md5key;
-                    console.log(data_proxy.md5_key)
+                    console.log(data_proxy.md5_key);
                     request.data = {args: message.data.md5key};
                     sendMsgToTab(request);
                     break;
