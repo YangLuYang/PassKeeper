@@ -1,0 +1,90 @@
+{
+  "notify_register_start": {
+    "message": "开始注册"
+  },
+  "notify_register_success":{
+    "message": "注册成功"
+  },
+  "notify_register_failed":{
+    "message": "注册失败，请重试。"
+  },
+  "notify_unlock_start": {
+    "message": "开始解锁账户"
+  },
+  "notify_unlock_success": {
+    "message": "解锁账户成功"
+  },
+  "notify_unlock_failed": {
+    "message": "解锁账户失败，请重试。"
+  },
+  "notify_pull_start": {
+    "message": "开始拉取密码列表"
+  },
+  "notify_pull_success": {
+    "message": "拉取列表成功"
+  },
+  "notify_pull_failed": {
+    "message": "拉取列表失败"
+  },
+  "notify_upload_start": {
+    "message": "开始上传"
+  },
+  "notify_upload_success": {
+    "message": "上传成功"
+  },
+  "notify_upload_failed": {
+    "message": "上传失败，请重试。"
+  },
+  "notify_popup": {
+    "message": "请在弹出的NAS钱包插件中进行支付。"
+  },
+  "notify_insufficient_balance": {
+    "message": "账户余额不足"
+  },
+  "notify_select_right_key": {
+    "message": "请选择正确的密钥文件"
+  },
+  "notify_please_unlock": {
+    "message": "此功能需要解锁账户"
+  },
+  "notify_search_failed":{
+    "message": "没有符合筛选要求的账户信息"
+  },
+  "string_register": {
+    "message": "注册"
+  },
+  "string_unlock": {
+    "message": "解锁账户"
+  },
+  "string_pull": {
+    "message": "拉取密码列表"
+  },
+  "string_upload": {
+    "message": "上传本地密码"
+  },
+  "string_search": {
+    "message": "搜索"
+  },
+  "string_host": {
+    "message": "网站"
+  },
+  "string_account": {
+    "message": "用户名"
+  },
+  "string_password": {
+    "message": "密码"
+  },
+  "string_current_account": {
+    "message": "账户"
+  },
+  "string_select_file": {
+    "message": "选择密钥文件"
+  },
+  "string_select_wrong_file": {
+    "message": "请选择正确的密钥文件"
+  },
+  "string_pass_list_empty":{
+    "message": "待上传的本地密码列表为空"
+  }
+
+}

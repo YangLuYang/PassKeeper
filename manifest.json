@@ -1,0 +1,32 @@
+{
+  "name": "PassKeeper",
+  "description": "Automatic generate random password and keep it in nebulas-chain",
+  "version": "1.0",
+  "manifest_version": 2,
+  "default_locale": "en",
+  "options_page": "options.html",
+  "permissions": [
+      "contextMenus", "storage","background","*://*.nebulas.io/*",
+      "activeTab", "tabs", "<all_urls>", "webNavigation","notifications"],
+  "background": {
+    "scripts": ["lib/jquery-3.3.1.min.js","lib/nebulas.js","lib/nebPay.js","lib/crypto-js.min.js","background.js"],
+    "persistent": true
+  },
+  "content_scripts":
+  [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["lib/jquery-3.3.1.min.js","lib/nebulas.js","lib/nebPay.js","content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "options.html"
+  },
+  "icons": {
+    "16": "images/globalGoogle16.png",
+    "48": "images/globalGoogle48.png",
+    "128": "images/globalGoogle128.png"
+  },
+  "web_accessible_resources": ["inpage.js","images/*.png"]
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div id="main">
+        <div class="logo container">Logo
+            <hr>
+        </div>
+        <div class="wallet container">
+            <label data-i18n="string_current_account">当前地址</label>
+            <input type="text" class="user-wallet" id="nas-wallet" readonly="readonly" disabled>
+        </div>
+
+        <div class="func-area container">
+            <p id="tip">选择你的密钥文件:</p>
+            <label class="file" id="select-key">
+                <span>选择密钥文件</span>
+                <form id="form">
+                    <input type="file" id="key" accept=".k">
+                </form>
+            </label>
+            <input type="text" id="show-key" class="hidden user-wallet" readonly="readonly" disabled>
+            <button class="btn btn-block" id="unlock" disabled>解锁</button>
+            <button class="btn btn-block" id="register" disabled>注册</button>
+            <a class="btn btn-block" id="download">下载密码文件</a>
+        </div>
+        <div class="show container hidden">
+            <div class="top">
+                <button class="btn btn-block" id="upload" data-i18n="string_upload">上传本地密码</button>
+                <button class="btn btn-block" id="pull-list" data-i18n="string_pull">拉取密码列表</button>
+            </div>
+            <div class="header">
+                <input id="input-search" type="text" placeholder="搜索密码"><button id="btn-search">Search</button>
+            </div>
+            <div class="content">
+                <table>
+                    <thead>
+                        <th>网站</th>
+                        <th>用户名</th>
+                        <th>密码</th>
+                    </thead>
+                    <tbody id="t-body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="lib/crypto-js.min.js"></script>
+<script src="lib/jquery-3.3.1.min.js"></script>
+<script src="lib/nebulas.js"></script>
+<script src="lib/nebPay.js"></script>
+<script src="options.js"></script>
+
+</html>

@@ -1,0 +1,71 @@
+{
+  "notify_register_start": {
+    "message": "Start Register,Please Complete The Transaction."
+  },
+  "notify_register_success":{
+    "message": "Register Success."
+  },
+  "notify_register_failed":{
+    "message": "Register Failed, Please Retry."
+  },
+  "notify_unlock_start": {
+    "message": "Start Unlock Account"
+  },
+  "notify_unlock_success": {
+    "message": "Unlock Account Success."
+  },
+  "notify_unlock_failed": {
+    "message": "Unlock Account Failed, Please Retry."
+  },
+  "notify_pull_start": {
+    "message": "Start Pull Pass."
+  },
+  "notify_pull_success": {
+    "message": "Pull Pass Success."
+  },
+  "notify_pull_failed": {
+    "message": "Pull Pass Failed."
+  },
+  "notify_upload_start": {
+    "message": "Start Upload."
+  },
+  "notify_upload_success": {
+    "message": "Upload Success."
+  },
+  "notify_upload_failed": {
+    "message": "Upload Failed."
+  },
+  "string_register": {
+    "message": "Register"
+  },
+  "string_unlock": {
+    "message": "Unlock"
+  },
+  "string_pull": {
+    "message": "Pull Pass"
+  },
+  "string_upload": {
+    "message": "Upload Un-Sync Pass"
+  },
+  "string_search": {
+    "message": "Search"
+  },
+  "string_host": {
+    "message": "host"
+  },
+  "string_account": {
+    "message": "account"
+  },
+  "string_password": {
+    "message": "password"
+  },
+  "string_current_account": {
+    "message": "Account"
+  },
+  "string_select_file": {
+    "message": "Select Key File"
+  },
+  "string_select_wrong_file": {
+    "message": "Select Wrong Key File"
+  }
+}
