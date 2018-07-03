@@ -65,6 +65,10 @@
                                         <p>使用AES256对账号和密码进行加密并上传，密钥文件本地生成不上传。</p>
                                     </li>
                                     <li>
+                                        <p>一键导入本地密码</p>
+                                        <p>一键导入Chrome本地密码</p>
+                                    </li>
+                                    <li>
                                         <p>查询密码信息</p>
                                         <p>输入搜索关键词即可查询密码信息。</p>
                                     </li>
@@ -127,6 +131,13 @@
                                             此网页中，<code>保存的密码</code>中的为已上传的密码列表。<code>未上传密码</code>中的为本地保存的密码，等待上传。</p>
                                     </li>
                                     <li>
+                                        <p>导入本地密码</p>
+                                        <p><em>目前只完成了macOS Chrome端适配</em></p>
+                                        <p>首先，导出Chrome本地密码，设置-&gt;密码和表单-&gt;管理密码-&gt;导出密码，输入密码后导出为 <code>Chrome 密码.cvs</code></p>
+                                        <p>导出后，解锁、点击按钮<code>查看密码列表</code>, 打开后点击如图按钮<img src="../screenshot/导入密码按钮.png" alt="" style="max-width:100%;"></p>
+                                        <p>选择刚刚导出的cvs文件，即可完成导入。</p>
+                                    </li>
+                                    <li>
                                         <p>联系作者</p>
                                         <p>解锁应用，点击按钮<code>查看密码列表</code>，打开网页，点击页面上方导航<code>contact</code>，切换至如图网页<img src="../screenshot/contact.png" alt="" style="max-width:100%;"></a></p>
                                         <p>分别输入发件人姓名、主题、右键内容，即可进行反馈。
@@ -135,13 +146,27 @@
                                 </ol>
                             </li>
                             <li>
-                                <p>TODO LIST</p>
+                                <p>TODO</p>
                                 <ul>
+                                    <li><del>本地密码导入</del> 7月4日 update</li>
                                     <li>真-自动填充</li>
-                                    <li>本地密码导入</li>
                                     <li>一网站多密码</li>
                                     <li>自动解锁</li>
                                     <li>移植智能设备</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>更新计划</p>
+                                <ul>
+                                    <li>导入本地密码后增加修改选项</li>
+                                    <li>PassList 分页、样式优化</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>已知BUG</p>
+                                <ul>
+                                    <li>Notification 显示覆盖问题</li>
+                                    <li>导入本地密码后不更新BadgeText</li>
                                 </ul>
                             </li>
                         </ul>
