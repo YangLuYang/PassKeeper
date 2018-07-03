@@ -16,6 +16,7 @@ const ActionEnum = {
     ACTION_DATA_ADDRESS: 'action_data_address',
     ACTION_GET_PASSWORD: 'action_get_password',
     ACTION_GENERATE_PASSWORD: 'action_generate_password',
+    ACTION_GET_ACCOUNT: 'action_get_account',
     ACTION_DEFAULT: 'action_default',
     ACTION_SET_ACCOUNT: 'action_set_account',
     ACTION_SET_PASSWORD: 'action_set_password'
@@ -181,6 +182,9 @@ chrome.runtime.onInstalled.addListener(function () {
     //初始化globle_data
     setUpGlobleData();
 });
+chrome.browserAction.onClicked.addListener(function (tab) {
+    chrome.tabs.create({'url': chrome.extension.getURL('index.html'), 'selected': true, 'highlighted': 'true'})
+});
 
 function setUpPersistent() {
     storage.set({
@@ -252,6 +256,22 @@ function setUpContextMenus() {
 //接收消息
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     console.log(JSON.stringify(message));
+    if(message.action === 'request_for_pass_list'){
+        //判断is_unlock
+        if(state_proxy.is_unlock === true || state_proxy.is_unlock === 'true'){
+            chrome.tabs.sendMessage(parseInt(sender.tab.id), {
+                action: "set_pass_list",
+                data: data_proxy.local_pass
+            });
+            return;
+        }else {
+            chrome.tabs.sendMessage(parseInt(sender.tab.id), {
+                action: "is_locked"
+            });
+            return;
+
+        }
+    }
     //获取tabId
     if(message.hello === "hello"){
         tabList.set(sender.tab.id,sender.url);
@@ -263,7 +283,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
         //发送通知
         if(message.action === ActionEnum.ACTION_NOTIFY){
             messageQueue.unshift(message.data);
-            showNotification(messageQueue.pop());
+            if(messageQueue.length === 1){
+                showNotification(messageQueue.pop())
+            }else {
+                setTimeout(showNotification(messageQueue.pop()),200);
+            }
         }
 
         if(message.from === SourceEnum.CONTENT){
@@ -403,7 +427,7 @@ const showNotification = function(message){
                 type: 'basic',
                 title: 'PassKeeper',
                 message: message,
-                iconUrl: 'images/128.png',
+                iconUrl: 'images/origin.png',
             };
             chrome.notifications.getAll(function (nids) {
                 if(nids instanceof Object){
@@ -441,8 +465,13 @@ function onMenuItemClick(o, tab) {
     switch (o.menuItemId){
         case '0':
             //保存用户名
-            let user_name = o.selectionText.toString().trim();
-            proxy.account = user_name;
+            // let user_name = o.selectionText.toString().trim();
+            intent.action = ActionEnum.ACTION_GET_PASSWORD;
+            let account = '';
+            chrome.tabs.sendMessage(tab.id, intent, function (resp) {
+                console.log(resp);
+                proxy.account = resp;
+            });
             break;
         case '1':
             //保存密码

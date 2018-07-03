@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="options.css">
+    <link rel="stylesheet" href="css/options.css">
 </head>
 <body>
     <div id="main">
         <div class="logo container">
-            <!--<img src="images/128.png" id="icon"> -->
             <span class="title">PassKeeper</span>
             <hr>
         </div>
@@ -32,19 +31,27 @@
         <div class="show container hidden">
             <div class="top">
                 <button class="btn btn-block" id="upload" data-i18n="string_upload">上传本地密码</button>
-                <button class="btn btn-block" id="pull-list" data-i18n="string_pull">拉取密码列表</button>
+                <button class="btn btn-block" id="pull-list" data-i18n="string_pull">同步密码列表</button>
+                <button class="btn btn-block" id="show-list" data-i18n="string_show_list">查看密码列表</button>
             </div>
             <div class="header">
                 <input id="input-search" type="text" placeholder="Search"><button id="btn-search" data-i18n="string_search">Search</button>
             </div>
             <div class="content">
-                <table>
-                    <thead id="t-head">
-                        <th data-i18n="string_host">网站</th>
-                        <th data-i18n="string_account">用户名</th>
-                        <th data-i18n="string_password">密码</th>
-                    </thead>
-                    <tbody id="t-body">
+                <table id="search-result">
+                    <tbody >
+                        <tr>
+                            <td data-i18n="string_host">网站</td>
+                            <td id="td-host"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="string_account">用户名</td>
+                            <td id="td-account"></td>
+                        </tr>
+                        <tr>
+                            <td data-i18n="string_password">密码</td>
+                            <td id="td-password"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -52,10 +59,8 @@
     </div>
 
 </body>
-<script src="lib/crypto-js.min.js"></script>
-<script src="lib/jquery-3.3.1.min.js"></script>
-<script src="lib/nebulas.js"></script>
-<script src="lib/nebPay.js"></script>
-<script src="options.js"></script>
+<script src="../lib/crypto-js.min.js"></script>
+<script src="../lib/jquery-3.3.1.min.js"></script>
+<script src="js/options.js"></script>
 
 </html>

@@ -87,16 +87,19 @@
     "message": "Account"
   },
   "string_select_file": {
-    "message": "Select Key FIle"
+    "message": "Select Key File"
   },
   "string_select_wrong_file": {
-    "message": "Please Select Right Key FIle"
+    "message": "Please Select Right Key File"
   },
   "string_pass_list_empty":{
     "message": "Local Pass List Empty"
   },
   "string_no_account": {
     "message": "No Account Found"
+  },
+  "string_show_list":{
+    "message":"Show All Account Info"
   },
   "menu_save_account":{
     "message": "Save This Account"

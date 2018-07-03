@@ -14,6 +14,7 @@ const ActionEnum = {
     ACTION_STATE_UNLOCK: 'action_state_unlock',
     ACTION_DATA_ADDRESS: 'action_data_address',
     ACTION_GET_PASSWORD: 'action_get_password',
+    ACTION_GET_ACCOUNT: 'action_get_account',
     ACTION_GENERATE_PASSWORD: 'action_generate_password',
     ACTION_DEFAULT: 'action_default',
     ACTION_SET_ACCOUNT: 'action_set_account',
@@ -74,6 +75,7 @@ let btnUnlock = $('#unlock'),
     btnDownload = $('#download'),
     btnUpload = $('#upload'),
     btnPullList = $('#pull-list'),
+    btnShowAll = $('#show-list'),
     wallet = $('#nas-wallet'),
     key = $('#key'),
     show = $('.show'),
@@ -205,8 +207,10 @@ const download = function () {
 //搜索
 const search = function () {
     let key_wrold = inputSearch.val().trim();
-    if(key_wrold === ''){
-        initPassList(Array.from(new Set(background.data_proxy.local_pass.concat(background.data_proxy.sync_pass))));
+    console.log(key_wrold.length)
+    if(key_wrold.length === 0){
+        $('#search-result').css('display','none');
+        return
     }
     let newList = passList.filter((item)=>{
         if(coverString(key_wrold,item.host.toString())||coverString(key_wrold,item.account.toString())||
@@ -218,14 +222,21 @@ const search = function () {
         //无符合筛选要求的字符串
         let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.ACTION_NOTIFY,geti18n("notify_search_failed"));
         sendMsg(intent);
+        $('#search-result').css('display','none');
     }else {
-        initPassList(newList)
+        $('#td-host').html(newList[0].host);
+        $('#td-account').html(newList[0].account);
+        $('#td-password').html(newList[0].password);
+        $('#search-result').css('display','block');
     }
 };
 function coverString(subStr,str){
     return str.toLowerCase().indexOf(subStr.toLowerCase()) > -1;
 }
 
+const openPassTab = function () {
+    chrome.tabs.create({ url: "html/index.html"});
+};
 
 
 //监听选择密钥文件事件
@@ -310,4 +321,5 @@ btnDownload.click(download);
 btnSearch.click(search);
 btnUpload.click(upload);
 btnPullList.click(pullList);
+btnShowAll.click(openPassTab);
 

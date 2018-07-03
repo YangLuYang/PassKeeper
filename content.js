@@ -45,6 +45,7 @@ const ActionEnum = {
     ACTION_STATE_UNLOCK: 'action_state_unlock',
     ACTION_DATA_ADDRESS: 'action_data_address',
     ACTION_GET_PASSWORD: 'action_get_password',
+    ACTION_GET_ACCOUNT: 'action_get_account',
     ACTION_GENERATE_PASSWORD: 'action_generate_password',
     ACTION_DEFAULT: 'action_default',
     ACTION_SET_ACCOUNT: 'action_set_account',
@@ -119,6 +120,10 @@ chrome.runtime.onMessage.addListener(
                     case ActionEnum.EXEC_PULL_LIST:
                         //获取密码列表
                         getAllPass(request.data.args);
+                        break;
+                        //获取用户名
+                    case ActionEnum.ACTION_GET_ACCOUNT:
+                        sendResponse($(document.activeElement).val());
                         break;
                         //获取密码
                     case ActionEnum.ACTION_GET_PASSWORD:

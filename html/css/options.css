@@ -155,24 +155,29 @@ input[readonly] {
     letter-spacing: 2px;
     text-align: center;
 }
-#t-body {
+
+tbody {
     color: #565656;
     font-size: 0.875rem;
     line-height: 1.43;
 }
-#t-body td {
-    max-width: 112px;
+tbody td {
+    max-width: 200px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
 
 }
-#t-head th{
+tbody th{
     min-width: 112px;
 }
-#t-body td[colspan]{
+tbody td[colspan]{
     width: 200px;
+}
+
+#search-result {
+    display: none;
 }
 .show .header {
     margin-bottom: 10px;

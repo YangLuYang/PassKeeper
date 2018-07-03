@@ -4,12 +4,11 @@
   "version": "1.0",
   "manifest_version": 2,
   "default_locale": "en",
-  "options_page": "options.html",
   "permissions": [
       "contextMenus", "storage","background","*://*.nebulas.io/*",
       "activeTab", "tabs", "<all_urls>", "webNavigation","notifications"],
   "background": {
-    "scripts": ["lib/jquery-3.3.1.min.js","lib/nebulas.js","lib/nebPay.js","lib/crypto-js.min.js","background.js"],
+    "scripts": ["lib/jquery-3.3.1.min.js","lib/nebulas.js","lib/crypto-js.min.js","background.js"],
     "persistent": true
   },
   "content_scripts":
@@ -21,12 +20,16 @@
     }
   ],
   "browser_action": {
-    "default_popup": "options.html"
+    "default_title": "PassKeeper",
+    "default_popup": "html/options.html"
   },
   "icons": {
     "16": "images/16.png",
     "48": "images/48.png",
     "128": "images/128.png"
   },
-  "web_accessible_resources": ["inpage.js","images/*.png"]
+  "web_accessible_resources": ["images/*.png"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' ; object-src 'self'",
+  "homepage_url": "https://github.com/YangLuYang/PassKeeper",
+  "options_page": "html/index.html"
 }

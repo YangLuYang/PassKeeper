@@ -63,7 +63,7 @@
     "message": "解锁"
   },
   "string_pull": {
-    "message": "拉取密码列表"
+    "message": "同步密码列表"
   },
   "string_upload": {
     "message": "上传本地密码"
@@ -97,6 +97,9 @@
   },
   "string_no_account": {
     "message": "无密码"
+  },
+  "string_show_list":{
+    "message":"查看密码列表"
   },
   "menu_save_account":{
     "message": "保存该用户名"

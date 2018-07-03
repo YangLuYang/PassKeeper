@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-security-policy" content="script-src * 'unsafe-inline'  'sha256-LEIsWvnmWZxGyx+eGI5PZSQitzjT8Hbq2EEvElyLauQ='">
+    <meta name="description" content="A portfolio template that uses Material Design Lite.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Tutorial</title>
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header" id="header">
+            <div class="mdl-layout__header-row portfolio-logo-row">
+                <span class="mdl-layout__title">
+                    <div class="portfolio-logo"></div>
+                    <span class="mdl-layout__title">Keep Your Valuable Password</span>
+                </span>
+            </div>
+            <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
+                <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                    <a class="mdl-navigation__link" href="index.html">PassList</a>
+                    <a class="mdl-navigation__link is-active" href="tutorial.html">Tutorial</a>
+                    <a class="mdl-navigation__link" href="contact.html">Contact</a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer mdl-layout--small-screen-only">
+            <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                <a class="mdl-navigation__link  is-active" href="index.html">PassList</a>
+                <a class="mdl-navigation__link" href="tutorial.html">Tutorial</a>
+                <a class="mdl-navigation__link" href="contact.html">Contact</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div class="mdl-grid portfolio-max-width">
+
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <article class="markdown-body entry-content" itemprop="text"><h2><a id="user-content-passkeeper" class="anchor" aria-hidden="true" href="#passkeeper"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PassKeeper</h2>
+                        <h4><a id="user-content-基于星云链的去中心化密码管理工具" class="anchor" aria-hidden="true" href="#基于星云链的去中心化密码管理工具"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>基于<a href="https://nebulas.io/" rel="nofollow">星云链</a>的去中心化密码管理工具。</h4>
+                        <ul>
+                            <li>
+                                <p>简介</p>
+                                <p>结合<a href="https://nebulas.io/" rel="nofollow">星云链</a>去中心化的特点与<a href="https://chrome.google.com/webstore/category/extensions" rel="nofollow">Chrome Extension</a>适合PC环境的特点，通过对称加密将密码信息存储在星云链，
+                                    而密钥文件本地生成不上传，有效保障用户密码信息的安全。</p>
+                            </li>
+                            <li>
+                                <p>功能特点</p>
+                                <ul>
+                                    <li>
+                                        <p>加密并上传密码信息</p>
+                                        <p>使用AES256对账号和密码进行加密并上传，密钥文件本地生成不上传。</p>
+                                    </li>
+                                    <li>
+                                        <p>一键填写网页表单</p>
+                                        <p>利用Chrome Extension的特性，当用户解锁后，右键点击 <code>填写密码</code> 时可实时解密密码，并填入表单。</p>
+                                    </li>
+                                    <li>
+                                        <p>查询密码信息</p>
+                                        <p>解锁后在输入框中输入搜索关键词即可查询密码信息。</p>
+                                    </li>
+                                    <li>
+                                        <p>国际化支持</p>
+                                        <p>目前支持简体中文与英文</p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>使用说明</p>
+                                <ol>
+                                    <li>
+                                        <p>下载</p>
+                                        <p>点击<a href="https://github.com/YangLuYang/PassKeeper/archive/master.zip">下载链接</a>并解压。</p>
+                                    </li>
+                                    <li>
+                                        <p>安装</p>
+                                        <p>如图进入Chrome浏览器的拓展程序页面。<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E6%8B%93%E5%B1%95%E7%A8%8B%E5%BA%8F%E9%A1%B5%E9%9D%A2.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E6%8B%93%E5%B1%95%E7%A8%8B%E5%BA%8F%E9%A1%B5%E9%9D%A2.png" alt="" style="max-width:100%;"></a>
+                                            切换右上角的<code>开发者模式</code>为打开状态，点击<code>加载已解压的拓展程序</code>，选中刚刚解压的文件夹。浏览器右上角出现<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/images/16.png"><img src="/YangLuYang/PassKeeper/raw/master/images/16.png" alt="" style="max-width:100%;"></a>即说明安装成功。</p>
+                                    </li>
+                                    <li>
+                                        <p>注册</p>
+                                        <p><em>默认用户已安装 <a href="https://github.com/nebulasio/WebExtensionWallet">NasExtWallet Extension</a> 并 拥有钱包地址。</em></p>
+                                        <p>直接点击图标打开如图<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%89%93%E5%BC%80.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%89%93%E5%BC%80.png" alt="" style="max-width:100%;"></a>
+                                            此时因为没有页面加载content.js，所以无法使用。需要用户随便打开一个网页，并加载完成后，如下图所示，显示钱包地址才可正常使用。
+                                            <a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E6%AD%A3%E5%B8%B8%E6%89%93%E5%BC%80.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E6%AD%A3%E5%B8%B8%E6%89%93%E5%BC%80.png" alt="" style="max-width:100%;"></a>
+                                            点击<code>下载密钥文件</code>按钮，即可下载您的密钥文件，此密钥文件用以注册、解锁、加密、解密，<strong>丢失，不可找回！</strong>
+                                            下载完成后，点击<code>选择密钥文件</code>按钮，在弹出的窗口中选择刚刚下载的<code>key.k</code>，点击<code>注册</code>按钮，在弹出的NAS支付窗口中完成支付，即可完成注册.</p>
+                                    </li>
+                                    <li>
+                                        <p>解锁</p>
+                                        <p>注册完成后，重新打开应用窗口，点击<code>选择密钥文件</code>并选择刚刚注册使用的<code>key.k</code>，如图<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E9%80%89%E4%B8%AD%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E9%80%89%E4%B8%AD%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6.png" alt="" style="max-width:100%;"></a>，32位值为密钥文件的md5值。
+                                            点击<code>解锁</code>按钮，即可完成解锁。如图<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E8%A7%A3%E9%94%81%E5%AE%8C%E6%88%90.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E8%A7%A3%E9%94%81%E5%AE%8C%E6%88%90.png" alt="" style="max-width:100%;"></a>
+                                            <strong>每次解锁的时间为5分钟。</strong></p>
+                                    </li>
+                                    <li>
+                                        <p>保存并上传密码</p>
+                                        <p>打开任一网站的注册或登陆页面，在<code>用户名</code>输出框中填写用户名并右键，在展开的菜单中点击<code>保存用户名</code>，如图<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95.png" alt="右键菜单" style="max-width:100%;"></a>
+                                            在<code>密码</code>处填写完成您的密码，点击<code>保存密码</code>或直接点击<code>生成随机密码并保存</code>，即可保存密码，此时可看到图标变化<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/ICON_WITH_BADGET.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/ICON_WITH_BADGET.png" alt="" style="max-width:100%;"></a>
+                                            此处的<code>1</code>即表明有一个本地密码等待上传。
+                                            重新点击应用图标，如果发现页面为<a target="_blank" href="/YangLuYang/PassKeeper/blob/master/screenshot/%E5%87%86%E5%A4%87%E8%A7%A3%E9%94%81.png"><img src="/YangLuYang/PassKeeper/raw/master/screenshot/%E5%87%86%E5%A4%87%E8%A7%A3%E9%94%81.png" alt="" style="max-width:100%;"></a>即说明解锁时间已到，需要重新解锁。
+                                            解锁后，点击<code>上传本地密码</code>，在打开的NAS支付窗口完成支付，即可完成上传密码。<strong>上传过程中通过您的密钥进行加密，请不要泄漏您的密钥文件！</strong></p>
+                                    </li>
+                                    <li>
+                                        <p>填写表单与搜索密码</p>
+                                        <p>解锁应用，打开上传过账户与密码的网站，在输入框上右键，分别选择<code>填入用户名</code>与<code>填入密码</code>，即可完成自动填充。</p>
+                                        <p>打开应用，在搜索框中键入搜索的关键字，点击<code>搜索</code>按钮即可完成搜索。鼠标悬停即可查看被省略的部分。</p>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                <p>TODO LIST</p>
+                                <ul>
+                                    <li>自动填充</li>
+                                    <li>本地密码导入</li>
+                                    <li>一网站多密码</li>
+                                    <li>自动解锁</li>
+                                    <li>移植智能设备</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+
+
+            </div>
+            <footer class="mdl-mini-footer">
+                <div class="mdl-mini-footer__left-section">
+                    <div class="mdl-logo">PassKeeper Console</div>
+                </div>
+                <div class="mdl-mini-footer__right-section">
+                    <ul class="mdl-mini-footer__link-list">
+                        <li><a href="contact.html">Help</a></li>
+                        <li><a href="#">Privacy & Terms</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <script src="lib/material.min.js"></script>
+
+</body>
+
+</html>
