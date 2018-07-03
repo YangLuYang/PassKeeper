@@ -181,6 +181,9 @@ chrome.runtime.onInstalled.addListener(function () {
     setUpPersistent();
     //初始化globle_data
     setUpGlobleData();
+    //首次使用，发送通知
+    showNotification("请阅读使用说明", 4000);
+    chrome.tabs.create({url: 'html/tutorial.html'})
 });
 chrome.browserAction.onClicked.addListener(function (tab) {
     chrome.tabs.create({'url': chrome.extension.getURL('index.html'), 'selected': true, 'highlighted': 'true'})
@@ -417,7 +420,8 @@ function getAllTabs () {
 //update & show notification
 let notificationId;
 let canUpdated = false;
-const showNotification = function(message){
+let lastS
+const showNotification = function(message, duration = 3000){
     console.log("创建通知:"+message);
     chrome.notifications.getPermissionLevel(function (level) {
         if(level!=='granted'){
@@ -446,7 +450,7 @@ const showNotification = function(message){
                     setTimeout(function(){
                         canUpdated = false;
                         chrome.notifications.clear(nId, function () {});
-                    }, 2000);
+                    }, duration);
                 });
             }
 

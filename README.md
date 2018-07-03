@@ -28,11 +28,14 @@
 
     1. 下载
 
-        点击[下载链接](https://github.com/YangLuYang/PassKeeper/archive/master.zip)并解压。
+        点击[下载链接](https://github.com/YangLuYang/PassKeeper/releases/download/v1.0/PassKeeper.crx)
     2. 安装
 
         如图进入Chrome浏览器的拓展程序页面。![](screenshot/拓展程序页面.png)
-        切换右上角的`开发者模式`为打开状态，点击`加载已解压的拓展程序`，选中刚刚解压的文件夹。浏览器右上角出现![](images/16.png)即说明安装成功。
+
+        将刚刚下载的`PassKeeper.crx`拖入该网页并安装。
+
+        浏览器右上角出现![](images/16.png)即说明安装成功。
     3. 注册
 
         *默认用户已安装 [NasExtWallet Extension](https://github.com/nebulasio/WebExtensionWallet) 并 拥有钱包地址。*

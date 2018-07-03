@@ -165,10 +165,11 @@ const unlock = function () {
     let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.EXEC_UNLOCK,args);
     sendMsg(intent);
 
+
     //拉取密码列表
     intent.action = ActionEnum.EXEC_PULL_LIST;
     intent.data = md5key;
-    sendMsg(intent);
+    setTimeout( sendMsg(intent),1000);
 };
 //拉取密码列表
 const pullList = function () {
@@ -197,6 +198,8 @@ const download = function () {
     btnDownload.attr('href',URL.createObjectURL(blob));
     btnDownload.attr('download','key.k');
 
+    let intent = new Intent(SourceEnum.BACKGROUND,ActionEnum.ACTION_NOTIFY,'请点击选择密钥文件，选中后请点击注册');
+    sendMsg(intent);
 
     //点击后，隐藏"下载密码文件",显示"选择密钥文件"
     $('#download').css('display','none');

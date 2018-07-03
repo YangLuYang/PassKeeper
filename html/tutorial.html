@@ -50,6 +50,10 @@
                                     而密钥文件本地生成不上传，有效保障用户密码信息的安全。</p>
                             </li>
                             <li>
+                                <p>项目地址</p>
+                                <h3><a href="https://github.com/YangLuYang/PassKeeper" target="_blank">PassKeeper</a></h3>
+                            </li>
+                            <li>
                                 <p>功能特点</p>
                                 <ul>
                                     <li>
@@ -75,18 +79,19 @@
                                 <ol>
                                     <li>
                                         <p>下载</p>
-                                        <p>点击<a href="https://github.com/YangLuYang/PassKeeper/archive/master.zip">下载链接</a>并解压。</p>
+                                        <p>点击<a href="https://github.com/YangLuYang/PassKeeper/releases/download/v1.0/PassKeeper.crx">下载链接</a></p>
                                     </li>
                                     <li>
                                         <p>安装</p>
                                         <p>如图进入Chrome浏览器的拓展程序页面。<img src="../screenshot/拓展程序页面.png" alt="" style="max-width:100%;">
-                                            切换右上角的<code>开发者模式</code>为打开状态，点击<code>加载已解压的拓展程序</code>，选中刚刚解压的文件夹。浏览器右上角出现<img src="../images/16.png" alt="" style="max-width:100%;">即说明安装成功。</p>
+                                            将刚刚下载的<code>PassKeeper.crx</code>拖入该网页并安装。</p>
+                                            <p>当浏览器右上角出现<img src="../images/16.png" alt="" style="max-width:100%;">即说明安装成功。</p>
                                     </li>
                                     <li>
                                         <p>注册</p>
                                         <p><em>默认用户已安装 <a href="https://github.com/nebulasio/WebExtensionWallet">NasExtWallet Extension</a> 并 拥有钱包地址。</em></p>
                                         <p>直接点击图标打开如图<img src="../screenshot/第一次打开.png" alt="" style="max-width:100%;">
-                                            此时因为没有页面加载content.js，所以无法使用。需要用户随便打开一个网页，并加载完成后，如下图所示，显示钱包地址才可正常使用。
+                                            此时因为没有页面加载content.js，所以无法使用。需要用户随便打开一个网页，并加载完成后，如下图所示，显示钱包地址才可正常使用。<b>不可抗拒因素限制，无法仅通过后台脚本与NasExtWallet进行交互</b>
                                             <img src="../screenshot/正常打开.png" alt="" style="max-width:100%;"></p>
                                         <p>点击<code>下载密钥文件</code>按钮，即可下载您的密钥文件，此密钥文件用以注册、解锁、加密、解密，<strong>丢失，不可找回！</strong></p>
                                         <p>下载完成后，点击<code>选择密钥文件</code>按钮，在弹出的窗口中选择刚刚下载的<code>key.k</code>，点击<code>注册</code>按钮，在弹出的NAS支付窗口中完成支付，即可完成注册.</p>
