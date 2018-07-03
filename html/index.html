@@ -7,6 +7,7 @@
     <meta name="description" content="A portfolio template that uses Material Design Lite.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>PassList</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/material.min.css">
     <link rel="stylesheet" href="css/styles.css" />
     <style>
@@ -94,25 +95,6 @@
                         </tr>
                         </thead>
                         <tbody class="t-body" id="sync">
-                        <!--<tr>-->
-                            <!--<td>ha.122.gov.cn</td>-->
-                            <!--<td>xxxxxxxxxxxxxxxx</td>-->
-                            <!--<td>sadpghwibt90</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td>music.163.com</td>-->
-                            <!--<td>12435352352</td>-->
-                            <!--<td>safgpoehtibet</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td>dl.reg.163.com</td>-->
-                            <!--<td>11389358y15</td>-->
-                            <!--<td>asdgbsagb</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td>yunpan.360.cn</td>-->
-                            <!--<td>2352361245</td>-->
-                            <!--<td>sadiohsdnagk</td>-->
                         <!--</tr>-->
                         </tbody>
                     </table>
@@ -130,10 +112,20 @@
                 </div>
             </footer>
         </main>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="add-csv">
+            <i class="material-icons">add</i>
+            <input type="file" id="csv" name="csv" style="opacity: 0;">
+        </button>
+        <div class="mdl-tooltip" for="add-csv">
+            导入本地密码
+        </div>
+
     </div>
     <script src="lib/material.min.js"></script>
     <script src="lib/jquery-3.3.1.min.js"></script>
     <script src="js/index.js"></script>
+    <script src="lib/jquery.csv.min.js"></script>
+
 </body>
 
 </html>
