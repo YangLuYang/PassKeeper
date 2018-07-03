@@ -344,6 +344,10 @@ function getTranResult(txhash,func,args) {
             }
             if(receipt.status === 0){
                 console.log(receipt.execute_result);
+                intent.action = ActionEnum.ACTION_NOTIFY;
+                intent.data = geti18n("notify_upload_failed");
+                intent.to = SourceEnum.BACKGROUND;
+                sendMsg(intent);
                 clearInterval(timer);
             }
         }).catch(function (err) {

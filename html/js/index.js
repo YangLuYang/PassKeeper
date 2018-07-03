@@ -22,7 +22,11 @@ $('#csv').on('change',function () {
         reader.onload = function (e) {
             let data = e.target.result;
             let arrays = ($.csv.toArrays(data)).slice(1);
-            background.globle_data.sync_pass = background.globle_data.sync_pass.concat(arrays);
+            let col3 = [];
+            arrays.forEach((i)=>{
+                col3.push(new Pass(i[0],i[2],i[3]));
+            });
+            background.globle_data.sync_pass = background.globle_data.sync_pass.concat(col3);
             console.log(background.globle_data.sync_pass);
             sync.html(initTable(arrays));
         };
@@ -67,3 +71,10 @@ const initList = function (list) {
     }
     return str;
 };
+class Pass {
+    constructor(host='', account='', password=''){
+        this.host = host;
+        this.account = account;
+        this.password = password;
+    }
+}
